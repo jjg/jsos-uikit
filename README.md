@@ -1,5 +1,7 @@
-Simple GUI tookit for Javascript applications
+jsos-uikit
 ====
+
+Simple GUI tookit for Javascript applications, part of the jsos platform.
 
 #STATUS
 Currently just one big file to make experimentation easier.  Once the core components work good enough the toolkit will be put into a proper module of some sort.
