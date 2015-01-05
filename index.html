@@ -2,8 +2,141 @@
 	<head>
 		<title>jsos uikit demo</title>
 		<style>
+			body {
+				background-color: grey;
+			}
 		</style>
 	</head>
 	<body>
+
+		<div>some content</div>
+
+		<script>
+			// menu
+			var jsos_menubar = {
+				menus: {},
+				update: function(){
+
+					// redraw the menu
+					var menubar_container = document.createElement("div");
+					menubar_container.id = "menubar";
+					menubar_container.style.position="absolute";
+					menubar_container.style.top = "0";
+					menubar_container.style.left = "0";
+					menubar_container.style.width = "100%";
+					menubar_container.style.height = "25px";
+					menubar_container.style.backgroundColor = "white";
+					menubar_container.style.borderBottom = "2px solid black";
+
+					document.body.appendChild(menubar_container);
+
+					for(var menu in this.menus){
+						if(this.menus.hasOwnProperty(menu)){
+
+							// add menu to menubar
+							var a_menu = this.menus[menu];
+							a_menu.closed = true;
+
+							var menu_container = document.createElement("div");
+							menu_container.id = a_menu.label + "_menu";
+							menu_container.innerHTML = a_menu.label;
+							menu_container.style.width = "100";
+							menu_container.style.marginTop = "2px";
+							menu_container.style.marginLeft = "5px";
+							menu_container.style.paddingTop = "3px";
+							menu_container.style.cssFloat = "left";
+
+							// experimental, feels recursive so keep an eye on this...
+							a_menu.menu_container = menu_container;
+
+							menu_container.onclick = function(selected_menu){
+
+								return function(){
+
+									if(selected_menu.closed){
+	
+										// highlight the menu title
+										selected_menu.menu_container.style.color = "white";
+										selected_menu.menu_container.style.backgroundColor = "black";
+
+										// load the menu items
+										for(var menu_item in selected_menu.items){
+											if(selected_menu.items.hasOwnProperty(menu_item)){
+
+												// add menu item to menu
+												var a_menu_item = selected_menu.items[menu_item];
+												var menu_item_container = document.createElement("div");
+
+												// menu item "style"
+												menu_item_container.style.color = "black";
+												menu_item_container.style.backgroundColor = "white";
+												menu_item_container.style.height = "25px";
+												menu_item_container.style.marginLeft = "1px";
+												menu_item_container.style.marginRight = "1px";
+												menu_item_container.style.padding = "3px";
+
+												// add a bit of bottom margin for the last menu item
+												if(a_menu_item.seq === selected_menu.items.length){
+													menu_item_container.style.marginBottom = "1px";
+												}
+
+												menu_item_container.innerHTML = a_menu_item.label;
+												menu_item_container.onclick = a_menu_item.handler;
+
+												selected_menu.menu_container.appendChild(menu_item_container);
+											}
+										}
+
+										selected_menu.closed = false;
+
+									} else {
+
+										// un-highlight the menu
+										selected_menu.menu_container.style.color = "black";
+										selected_menu.menu_container.style.backgroundColor = "white";
+										selected_menu.menu_container.innerHTML = selected_menu.label;
+										selected_menu.closed = true;
+									}
+
+								};
+							}(a_menu);
+
+							menubar_container.appendChild(menu_container);
+						}
+					}	
+				}
+			};
+
+			var status_bar = {};
+			var modal_dialog = {};
+	
+			// dialog
+			// button
+
+			// init the menu bar
+
+			// ...using an object literal
+			jsos_menubar.menus.File = {"label":"File","items":[{"seq":1,"label":"New","handler":function(){alert()}},{"seq":2,"label":"Open"},{"seq":3,"label":"Save"}]};
+			
+			// ... declaratively
+			var edit_menu = {};
+			edit_menu.label = "Edit"
+			edit_menu.items = [];
+
+			var edit_menu_item = {};
+			edit_menu_item.seq = 1;
+			edit_menu_item.label = "Copy";
+			edit_menu_item.handler = function(){
+				alert("copy clicked!");
+			};
+
+			edit_menu.items.push(edit_menu_item);
+
+			jsos_menubar.menus.Edit = edit_menu; 
+
+			// now draw the menu
+			jsos_menubar.update();
+
+		</script>
 	</body>
 </html>
