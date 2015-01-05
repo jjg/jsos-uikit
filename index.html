@@ -125,7 +125,7 @@
 					var parent_width = document.body.clientWidth;
 					var parent_height = document.body.clientHeight;
 					dialog_container.style.left = ((parent_width / 2) - (this.width / 2)) + "px";
-					dialog_container.style.top = ((parent_height /2) - (dialog_container.style.height / 2)) + "px";
+					dialog_container.style.top = parent_height / 4 + "px";
 					dialog_container.style.width = this.width + "px";
 
 					var title_container = document.createElement("div");
@@ -138,6 +138,7 @@
 
 					// add contents
 					var contents_container = document.createElement("div");
+					contents_container.style.padding = "10px";
 				
 					if(contents.text){
 						contents_container.appendChild(document.createTextNode(contents.text));
@@ -150,6 +151,7 @@
 								var selected_field = contents.form.fields[field];
 
 								var form_field_container = document.createElement("div");
+								form_field_container.style.padding = "10px";
 
 								//form_field_container.style.textAlign = "center";
 
