@@ -112,8 +112,7 @@
 
 			// dialog
 			var jsos_modal_dialog = {
-				text: "",
-				form: {},
+				width: 500,		// default width, can be overridden
 				show: function(title, contents, ok_callback, cancel_callback){
 
 					var dialog_container = document.createElement("div");
@@ -123,12 +122,11 @@
 					dialog_container.style.border = "1px solid black";
 
 					// compute placement of container
-					var default_width = 500;
 					var parent_width = document.body.clientWidth;
 					var parent_height = document.body.clientHeight;
-					dialog_container.style.left = ((parent_width / 2) - (default_width / 2)) + "px";
+					dialog_container.style.left = ((parent_width / 2) - (this.width / 2)) + "px";
 					dialog_container.style.top = ((parent_height /2) - (dialog_container.style.height / 2)) + "px";
-					dialog_container.style.width = default_width + "px";
+					dialog_container.style.width = this.width + "px";
 
 					var title_container = document.createElement("div");
 					title_container.style.backgroundColor = "black";
@@ -140,9 +138,9 @@
 
 					// add contents
 					var contents_container = document.createElement("div");
-					
+				
 					if(contents.text){
-						contents_container.appendChild(document.createTextNode(this.text));
+						contents_container.appendChild(document.createTextNode(contents.text));
 					}
 
 					if(contents.form){	
@@ -152,11 +150,24 @@
 								var selected_field = contents.form.fields[field];
 
 								var form_field_container = document.createElement("div");
-								var form_field_label = document.createTextNode(selected_field.label);
 
-								form_field_container.appendChild(form_field_label);
-								form_field_container.appendChild(selected_field.input);
+								//form_field_container.style.textAlign = "center";
 
+								//var form_field_label = document.createTextNode(selected_field.label);
+								var form_field_label_container = document.createElement("div");
+								//form_field_label_container.style.width = ((this.width / 2) - 6) + "px";
+								//form_field_label_container.style.cssFloat = "left";
+								//form_field_label_container.style.textAlign = "right";
+								form_field_label_container.innerHTML = selected_field.label;
+
+								form_field_container.appendChild(form_field_label_container);
+
+								var form_field_input_container = document.createElement("div");
+								//form_field_input_container.style.width = ((this.width / 2) - 6) + "px";
+								//form_field_input_container.style.cssFloat = "left";
+								form_field_input_container.appendChild(selected_field.input);
+
+								form_field_container.appendChild(form_field_input_container);
 								contents_container.appendChild(form_field_container);
 							}
 						}
