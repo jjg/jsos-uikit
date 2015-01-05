@@ -107,11 +107,89 @@
 				}
 			};
 
+			// status bar
 			var status_bar = {};
-			var modal_dialog = {};
-	
+
 			// dialog
+			var jsos_modal_dialog = {
+				show: function(title, contents, ok_callback, cancel_callback){
+
+					var dialog_container = document.createElement("div");
+					dialog_container.style.position = "absolute";
+					dialog_container.style.color = "black";
+					dialog_container.style.backgroundColor = "white";
+					dialog_container.style.border = "1px solid black";
+
+					// compute placement of container
+					var default_width = 500;
+					var parent_width = document.body.clientWidth;
+					var parent_height = document.body.clientHeight;
+					dialog_container.style.left = ((parent_width / 2) - (default_width / 2)) + "px";
+					dialog_container.style.top = ((parent_height /2) - (dialog_container.style.height / 2)) + "px";
+					dialog_container.style.width = default_width + "px";
+
+					var title_container = document.createElement("div");
+					title_container.style.backgroundColor = "black";
+					title_container.style.color = "white";
+					title_container.style.textAlign = "center";
+					title_container.style.height = "25px";
+					title_container.innerHTML = title;
+					dialog_container.appendChild(title_container);
+
+					var contents_container = document.createElement("div");
+					contents_container.innerHTML = contents;
+					dialog_container.appendChild(contents_container);
+
+					var controls_container = document.createElement("div");
+					controls_container.style.height = "50px";
+					controls_container.style.textAlign = "right";
+
+					if(ok_callback){
+						var ok_button = document.createElement("div");
+						ok_button.style.margin = "3px";
+						ok_button.style.width = "75px";
+						ok_button.style.height = "25px";
+						ok_button.style.cssFloat = "right";
+						ok_button.style.textAlign = "center";
+						ok_button.style.color = "black";
+						ok_button.style.backgroundColor = "white";
+						ok_button.style.border = "2px solid black";
+						ok_button.innerHTML = "OK";
+						ok_button.onclick = function(){
+							document.body.removeChild(dialog_container);
+							ok_callback(true);
+						};
+						controls_container.appendChild(ok_button);
+					}
+
+                    if(cancel_callback){
+                        var cancel_button = document.createElement("div");
+                        cancel_button.style.margin = "3px";
+                        cancel_button.style.width = "75px";
+                        cancel_button.style.height = "25px";
+                        cancel_button.style.cssFloat = "right";
+                        cancel_button.style.textAlign = "center";
+                        cancel_button.style.color = "black";
+                        cancel_button.style.backgroundColor = "white";
+                        cancel_button.style.border = "2px solid red";
+                        cancel_button.innerHTML = "Cancel";
+                        cancel_button.onclick = function(){
+                            document.body.removeChild(dialog_container);
+							cancel_callback(false);
+                        };
+                        controls_container.appendChild(cancel_button);
+                    }
+
+
+					dialog_container.appendChild(controls_container);
+
+					document.body.appendChild(dialog_container);
+				}
+			};
+
 			// button
+			// drop-down
+			// etc...
 
 			// init the menu bar
 
@@ -127,7 +205,9 @@
 			edit_menu_item.seq = 1;
 			edit_menu_item.label = "Copy";
 			edit_menu_item.handler = function(){
-				alert("copy clicked!");
+
+				jsos_modal_dialog.show("foo", "Bar is a placeholder for a more meaningful amount of text that might otherwise appear inside this box.  Don't be afraid, it's OK, just click OK.", function(result){alert(result)}, function(result){alert(result)});
+
 			};
 
 			edit_menu.items.push(edit_menu_item);
@@ -136,6 +216,8 @@
 
 			// now draw the menu
 			jsos_menubar.update();
+
+			
 
 		</script>
 	</body>
