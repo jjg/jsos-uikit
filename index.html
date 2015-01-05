@@ -4,6 +4,7 @@
 		<style>
 			body {
 				background-color: grey;
+				font-family: Arial;
 			}
 		</style>
 	</head>
@@ -254,10 +255,10 @@
 				email_input.type = "text";
 
 				var passphrase_input = document.createElement("input");
-				passphrase_input.type = "text";
+				passphrase_input.type = "password";
 
 				// assemble the form contents
-				modal_contents.form = {"fields":[{"label":"email","input":email_input},{"label":"pass","input":passphrase_input}]};
+				modal_contents.form = {"fields":[{"label":"email","input":email_input},{"label":"passphrase","input":passphrase_input}]};
 
 				function modal_ok_handler(){
 					console.log(email_input.value);
