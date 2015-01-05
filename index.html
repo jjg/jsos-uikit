@@ -234,7 +234,7 @@
 			// init the menu bar
 
 			// ...using an object literal
-			jsos_menubar.menus.File = {"label":"File","items":[{"seq":1,"label":"New","handler":function(){alert()}},{"seq":2,"label":"Open"},{"seq":3,"label":"Save"}]};
+			jsos_menubar.menus.File = {"label":"File","items":[{"seq":1,"label":"New"},{"seq":2,"label":"Open","handler":function(){open_file()}},{"seq":3,"label":"Save"}]};
 			
 			// ... declaratively
 			var edit_menu = {};
@@ -280,7 +280,49 @@
 			// now draw the menu
 			jsos_menubar.update();
 
-			
+			// how about an open dialog?
+			function open_file(){
+
+				// drop-down list to navigate up
+				var open_dir_select = document.createElement("select");
+				open_dir_select.style.width = "100%";
+				var dir_select_item = document.createElement("option");
+				dir_select_item.value = "/";
+				dir_select_item.innerHTML = "/";
+				open_dir_select.appendChild(dir_select_item); 
+
+				// select list for files in current directory
+				file_list_select = document.createElement("select");
+				file_list_select.style.width = "100%";
+				file_list_select.style.height = "200px";
+				file_list_select.multiple = true;
+
+				var file_list_item = document.createElement("option");
+
+				// load real file list here; for this example we make one up
+				file_list_item.value = "plain.txt";
+				file_list_item.innerHTML = "plain.txt";
+				file_list_select.appendChild(file_list_item);
+
+				function open_ok_handler(){
+					console.log("got open_ok_handler");
+					console.log(file_list_select.selectedIndex);
+
+					if(file_list_select.selectedIndex > -1){
+						var selected_value = file_list_select.options[file_list_select.selectedIndex].value;
+						console.log(selected_value);
+					}
+				}
+
+				function open_cancel_handler(){
+					console.log("got open_cancel_handler");
+				}
+
+				var open_modal_contents = {};
+				open_modal_contents.form = {"fields":[{"label":"","input":open_dir_select},{"label":"","input":file_list_select}]};
+
+				jsos_modal_dialog.show("Open", open_modal_contents, open_ok_handler, open_cancel_handler);
+			}
 
 		</script>
 	</body>
