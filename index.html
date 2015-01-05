@@ -112,6 +112,8 @@
 
 			// dialog
 			var jsos_modal_dialog = {
+				text: "",
+				form: {},
 				show: function(title, contents, ok_callback, cancel_callback){
 
 					var dialog_container = document.createElement("div");
@@ -136,10 +138,34 @@
 					title_container.innerHTML = title;
 					dialog_container.appendChild(title_container);
 
+					// add contents
 					var contents_container = document.createElement("div");
-					contents_container.innerHTML = contents;
+					
+					if(contents.text){
+						contents_container.appendChild(document.createTextNode(this.text));
+					}
+
+					if(contents.form){	
+						for(field in contents.form.fields){
+							if(contents.form.fields.hasOwnProperty(field)){
+
+								var selected_field = contents.form.fields[field];
+
+								var form_field_container = document.createElement("div");
+								var form_field_label = document.createTextNode(selected_field.label);
+
+								form_field_container.appendChild(form_field_label);
+								form_field_container.appendChild(selected_field.input);
+
+								contents_container.appendChild(form_field_container);
+							}
+						}
+					}
+
+					//contents_container.innerHTML = contents;
 					dialog_container.appendChild(contents_container);
 
+					// add controls
 					var controls_container = document.createElement("div");
 					controls_container.style.height = "50px";
 					controls_container.style.textAlign = "right";
@@ -206,7 +232,30 @@
 			edit_menu_item.label = "Copy";
 			edit_menu_item.handler = function(){
 
-				jsos_modal_dialog.show("foo", "Bar is a placeholder for a more meaningful amount of text that might otherwise appear inside this box.  Don't be afraid, it's OK, just click OK.", function(result){alert(result)}, function(result){alert(result)});
+				// demo modal functionality
+				var modal_contents = {};
+				modal_contents.text = "This is some plain text for testing.";
+
+				// create some form fields
+				var email_input = document.createElement("input");
+				email_input.type = "text";
+
+				var passphrase_input = document.createElement("input");
+				passphrase_input.type = "text";
+
+				// assemble the form contents
+				modal_contents.form = {"fields":[{"label":"email","input":email_input},{"label":"pass","input":passphrase_input}]};
+
+				function modal_ok_handler(){
+					console.log(email_input.value);
+					console.log(passphrase_input.value);
+				}
+
+				function modal_cancel_handler(){
+					console.log("modal cancelled");
+				}
+				
+				jsos_modal_dialog.show("foo", modal_contents, modal_ok_handler, modal_cancel_handler);
 
 			};
 
